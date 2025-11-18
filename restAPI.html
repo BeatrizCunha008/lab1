@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="pt">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>REST API — Integração com Java</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>REST API — Integração com Java</h1>
+  <p>Guia simples com conceitos essenciais e exemplos práticos.</p>
+
+  <h2>1. O que é REST?</h2>
+  <ul>
+    <li>Comunicação via HTTP</li>
+    <li>Formato comum: JSON</li>
+    <li>Verbos: GET, POST, PUT, DELETE</li>
+  </ul>
+
+  <h2>2. Estrutura básica de uma API</h2>
+  <pre><code>GET    /api/items
+GET    /api/items/{id}
+POST   /api/items
+PUT    /api/items/{id}
+DELETE /api/items/{id}</code></pre>
+
+  <h2>3. Exemplo Spring Boot</h2>
+  <h3>Controller</h3>
+  <pre><code>@RestController
+@RequestMapping("/api/items")
+public class ItemController {
+
+  @GetMapping
+  public List<Item> all(){ return repo.findAll(); }
+
+  @PostMapping
+  public Item create(@RequestBody Item item){ return repo.save(item); }
+}</code></pre>
+
+  <h3>Modelo</h3>
+  <pre><code>@Entity
+public class Item {
+  @Id @GeneratedValue
+  private Long id;
+  private String name;
+  private double price;
+}</code></pre>
+
+  <h2>4. Exemplo de chamada Java (cliente)</h2>
+  <pre><code>HttpClient client = HttpClient.newHttpClient();
+HttpRequest req = HttpRequest.newBuilder()
+  .uri(URI.create("http://localhost:8080/api/items"))
+  .GET().build();
+HttpResponse<String> resp = client.send(req, HttpResponse.BodyHandlers.ofString());
+System.out.println(resp.body());</code></pre>
+
+  <h2>5. Front-end com JavaScript</h2>
+  <pre><code>fetch('/api/items')
+  .then(r => r.json())
+  .then(data => console.log(data));</code></pre>
+
+  <h2>6. JSON Exemplo</h2>
+  <pre><code>{
+  "name": "Teclado",
+  "price": 59.9
+}</code></pre>
+
+  <h2>7. Link para página inicial</h2>
+  <a href="index.html">Voltar</a>
+
+</body>
+</html>
